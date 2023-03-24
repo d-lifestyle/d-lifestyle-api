@@ -1,0 +1,5 @@
+{
+     "JWT_SECRET": "JSONWEBTOKENSECRET",
+     "DB_PATH": "mongodb+srv://dinesh:hgfUYWbjVCheedBd@cluster0.hoqxjop.mongodb.net/?retryWrites=true&w=majority",
+     "JWT_EXPIRE": "36000s"
+}
