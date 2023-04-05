@@ -2,8 +2,9 @@ export interface MenuProps {
      _id?: string;
      createdAt?: string;
      updateAt?: string;
+     path: string;
      title: string;
-     links: LinkProps[];
+     links?: LinkProps[];
 }
 
 export interface LinkProps {

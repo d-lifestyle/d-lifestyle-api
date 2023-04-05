@@ -32,6 +32,11 @@ export class ToDoController implements IController {
                method: "DELETE",
                path: "/todo/:id",
           });
+          this.routes.push({
+               handler: this.ToggleTodo,
+               method: "PUT",
+               path: "/todo/toggle/:id",
+          });
      }
 
      public async getAllTodo(req: Request, res: Response) {
@@ -66,7 +71,25 @@ export class ToDoController implements IController {
           try {
                const { task, title }: TodoProps = req.body;
                const updateTodo = await Todo.findOneAndUpdate({ _id: req.params.id }, { $set: { task, title } });
-               return Ok(res, `${updateTodo} is updated!`);
+               return Ok(res, `${ updateTodo } is updated!`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+
+     public async ToggleTodo(req: Request, res: Response) {
+          try {
+               const id = req.params.id;
+               const yourData = await Todo.findById({ _id: id });
+               const data = await Todo.findOneAndUpdate(
+                    { _id: id },
+                    {
+                         $set: {
+                              task: yourData.task ===true ? false : true,
+                         },
+                    }
+               );
+               return Ok(res, `${ data.title } is todo updated`);
           } catch (err) {
                return UnAuthorized(res, err);
           }

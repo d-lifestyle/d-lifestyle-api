@@ -8,11 +8,12 @@ const MenuSchema: mongoose.Schema<
      {}
 > = new mongoose.Schema<MenuProps>(
      {
-          title: { type: mongoose.Schema.Types.String, required: true },
+          title: { type: mongoose.Schema.Types.String, required: true, lowercase: true },
+          path: { type: mongoose.Schema.Types.String, required: true, lowercase: true },
           links: [
                {
-                    name: { type: mongoose.Schema.Types.String, required: true },
-                    path: { type: mongoose.Schema.Types.String, required: true },
+                    name: { type: mongoose.Schema.Types.String, lowercase: true },
+                    path: { type: mongoose.Schema.Types.String, lowercase: true },
                },
           ],
      },

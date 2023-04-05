@@ -14,7 +14,12 @@ import { registerRoutesV1 } from "api";
 dotenv.config();
 const corsOptions: CorsOptions = {
      credentials: true,
-     origin: ["http://localhost:3000/", "http://localhost:3000"],
+     origin: [
+          "http://localhost:3000/",
+          "http://localhost:3000",
+          "http://192.168.0.109:3000/",
+          "http://192.168.0.109:3000",
+     ],
      optionsSuccessStatus: 200,
 };
 
@@ -61,7 +66,7 @@ class App {
                     console.log("connected to database");
                })
                .catch((err) => {
-                    console.log(err);
+                    console.log("Mongoose error", err);
                });
      }
 }

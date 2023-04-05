@@ -54,8 +54,8 @@ export class MenuController implements IController {
 
      public async AddNewMenu(req: Request, res: Response) {
           try {
-               const { links, title }: MenuProps = req.body;
-               const newCategory = await new Menu({ links, title }).save();
+               const { links, title, path }: MenuProps = req.body;
+               const newCategory = await new Menu({ links, title, path }).save();
                return Ok(res, `${newCategory.title} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -64,8 +64,11 @@ export class MenuController implements IController {
 
      public async UpdateMenuById(req: Request, res: Response) {
           try {
-               const { links, title }: MenuProps = req.body;
-               const updateCategory = await Menu.findOneAndUpdate({ _id: req.params.id }, { $set: { links, title } });
+               const { links, title, path }: MenuProps = req.body;
+               const updateCategory = await Menu.findOneAndUpdate(
+                    { _id: req.params.id },
+                    { $set: { links, title, path } }
+               );
                return Ok(res, `${updateCategory.title} is updated!`);
           } catch (err) {
                return UnAuthorized(res, err);
