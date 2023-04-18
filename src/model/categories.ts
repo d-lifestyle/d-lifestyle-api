@@ -9,7 +9,6 @@ const CategorySchema: mongoose.Schema<
 > = new mongoose.Schema<CategoriesProps>(
      {
           name: { type: mongoose.Schema.Types.String, required: true, lowercase: true },
-          description: { type: mongoose.Schema.Types.String, lowercase: true },
      },
      {
           timestamps: true,

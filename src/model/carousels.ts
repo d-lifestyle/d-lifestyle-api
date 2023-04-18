@@ -6,16 +6,15 @@ const CarouselSchema: mongoose.Schema<
      mongoose.Model<CarouselProps, any, any>,
      undefined,
      {}
-> = new mongoose.Schema<CarouselProps>({
-     title: { type: mongoose.Schema.Types.String, required: true },
-     Category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
-     data: [
-          {
-               dataImage: { type: mongoose.Schema.Types.String, required: true },
-               dataAlt: { type: mongoose.Schema.Types.String, required: true },
-          },
-     ],
-});
+> = new mongoose.Schema<CarouselProps>(
+     {
+          dataImage: { type: mongoose.Schema.Types.String, required: true },
+          dataAlt: { type: mongoose.Schema.Types.String, required: true },
+     },
+     {
+          timestamps: true,
+     }
+);
 
 export const Carousel: mongoose.Model<CarouselProps, {}, {}> = mongoose.model<CarouselProps>(
      "Carousel",

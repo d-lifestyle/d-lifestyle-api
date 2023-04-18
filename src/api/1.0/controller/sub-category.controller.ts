@@ -2,6 +2,7 @@ import { IController, IControllerRoutes, SubCategoryProps } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { SubCategory } from "model";
+import * as mongoose from "mongoose";
 
 export class SubCategoryController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -32,11 +33,16 @@ export class SubCategoryController implements IController {
                method: "DELETE",
                path: "/sub-category/:id",
           });
+          this.routes.push({
+               handler: this.GetSubCategoryByCategoryId,
+               method: "GET",
+               path: "/sub-category/category/:id",
+          });
      }
 
      public async getAllSubCategory(req: Request, res: Response) {
           try {
-               const data = await SubCategory.find().sort({ createdAt: -1 }).populate("Category");
+               const data = await SubCategory.find().sort({ createdAt: -1 }).populate("CategoryId");
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -45,7 +51,7 @@ export class SubCategoryController implements IController {
 
      public async GetSubCategoryById(req: Request, res: Response) {
           try {
-               const data = await SubCategory.findById({ _id: req.params.id }).populate("Category");
+               const data = await SubCategory.findById({ _id: req.params.id }).populate("CategoryId");
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -54,8 +60,8 @@ export class SubCategoryController implements IController {
 
      public async AddNewSubCategory(req: Request, res: Response) {
           try {
-               const { Category, description, name }: SubCategoryProps = req.body;
-               const newCategory = await new SubCategory({ Category, description, name }).save();
+               const { CategoryId, name }: SubCategoryProps = req.body;
+               const newCategory = await new SubCategory({ CategoryId, name }).save();
                return Ok(res, `${newCategory.name} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -64,10 +70,10 @@ export class SubCategoryController implements IController {
 
      public async UpdateSubCategoryById(req: Request, res: Response) {
           try {
-               const { Category, description, name }: SubCategoryProps = req.body;
+               const { CategoryId, name }: SubCategoryProps = req.body;
                const updateCategory = await SubCategory.findOneAndUpdate(
                     { _id: req.params.id },
-                    { $set: { Category, description, name } }
+                    { $set: { CategoryId, name } }
                );
                return Ok(res, `${updateCategory.name} is updated!`);
           } catch (err) {
@@ -79,6 +85,16 @@ export class SubCategoryController implements IController {
           try {
                const data = await SubCategory.findByIdAndDelete({ _id: req.params.id });
                return Ok(res, `${data} is deleted!`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+
+     public async GetSubCategoryByCategoryId(req: Request, res: Response) {
+          try {
+               const id: string = req.params.id;
+               const data = await SubCategory.find({ Category: id as unknown });
+               return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
           }

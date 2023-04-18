@@ -1,13 +1,14 @@
 import { Express } from "express";
 import { IController } from "types";
 import {
+     AccommodationController,
      CarouselController,
      CategoriesController,
      HomePageController,
-     HotelController,
-     MenuController,
+     MainCategoriesController,
      SubCategoryController,
      ToDoController,
+     ToursTravelController,
 } from "./controller";
 
 const routesHandler = (express: Express, controller: IController) => {
@@ -35,9 +36,10 @@ const routesHandler = (express: Express, controller: IController) => {
 export const registerRoutesV1 = (express: Express) => {
      routesHandler(express, new HomePageController());
      routesHandler(express, new ToDoController());
-     routesHandler(express, new MenuController());
      routesHandler(express, new CategoriesController());
      routesHandler(express, new CarouselController());
-     routesHandler(express, new HotelController());
      routesHandler(express, new SubCategoryController());
+     routesHandler(express, new AccommodationController());
+     routesHandler(express, new ToursTravelController());
+     routesHandler(express, new MainCategoriesController());
 };

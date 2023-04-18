@@ -3,5 +3,4 @@ export interface CategoriesProps {
      createdAt?: string;
      updatedAt?: string;
      name: string;
-     description: string;
 }

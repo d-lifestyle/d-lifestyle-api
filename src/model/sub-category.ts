@@ -9,8 +9,7 @@ const SubCategorySchema: mongoose.Schema<
 > = new mongoose.Schema<SubCategoryProps>(
      {
           name: { type: mongoose.Schema.Types.String, required: true },
-          Category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
-          description: { type: mongoose.Schema.Types.String, required: true },
+          CategoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
      },
      {
           timestamps: true,

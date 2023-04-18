@@ -37,7 +37,7 @@ export class CategoriesController implements IController {
 
      public async getAllCategories(req: Request, res: Response) {
           try {
-               const data = await Category.find().sort({ createdAt: -1 });
+               const data = await Category.find();
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -55,8 +55,8 @@ export class CategoriesController implements IController {
 
      public async AddNewCategories(req: Request, res: Response) {
           try {
-               const { name, description }: CategoriesProps = req.body;
-               const newCategory = await new Category({ name, description }).save();
+               const { name }: CategoriesProps = req.body;
+               const newCategory = await new Category({ name }).save();
                return Ok(res, `${newCategory.name} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -65,11 +65,7 @@ export class CategoriesController implements IController {
 
      public async UpdateCategoriesById(req: Request, res: Response) {
           try {
-               const { name, description }: CategoriesProps = req.body;
-               const updateCategory = await Category.findOneAndUpdate(
-                    { _id: req.params.id },
-                    { $set: { name, description } }
-               );
+               const updateCategory = await Category.findOneAndUpdate({ _id: req.params.id }, { $set: req.body });
                return Ok(res, `${updateCategory.name} is updated!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -84,4 +80,5 @@ export class CategoriesController implements IController {
                return UnAuthorized(res, err);
           }
      }
+
 }

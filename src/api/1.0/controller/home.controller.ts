@@ -1,4 +1,3 @@
-import { Link } from "db";
 import { Request, Response } from "express";
 import { IController, IControllerRoutes } from "types";
 import { Ok, UnAuthorized } from "utils";
@@ -15,7 +14,7 @@ export class HomePageController implements IController {
 
      public async Homepage(req: Request, res: Response) {
           try {
-               const data = Link;
+               const data = "Hello api is responding";
                return Ok(res, data);
           } catch (err) {
                console.log(err);
