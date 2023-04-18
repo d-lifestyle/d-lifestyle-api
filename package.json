@@ -5,8 +5,8 @@
      "license": "MIT",
      "scripts": {
           "clean": "rimraf ./build/* && rimraf ./logs/*",
-          "lint": "tslint -c tslint.json 'src/**/*.ts'",
-          "start": "cross-env DEBUG=app:* nodemon --watch 'src/**/*' -e ts --exec ./node_modules/.bin/ts-node -r tsconfig-paths/register ./src/bin/www.ts"
+          "lint": "tslint -c tslint.json 'src/*/.ts'",
+          "start": "cross-env  ts --exec ./node_modules/.bin/ts-node -r tsconfig-paths/register ./src/bin/www.ts"
      },
      "dependencies": {
           "bcrypt": "^5.0.0",
