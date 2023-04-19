@@ -2,6 +2,7 @@ import { IController, IControllerRoutes, ToursTravelProps } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { ToursTravel } from "model";
+import { ProtectRoute } from "middleware";
 
 export class ToursTravelController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -21,16 +22,19 @@ export class ToursTravelController implements IController {
                handler: this.UpdateToursTravelById,
                method: "PUT",
                path: "/tours-travel/:id",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewToursTravel,
                method: "POST",
                path: "/tours-travel",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteToursTravelById,
                method: "DELETE",
                path: "/tours-travel/:id",
+               middleware: [ProtectRoute],
           });
      }
 

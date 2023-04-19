@@ -9,6 +9,7 @@ import {
      SubCategoryController,
      ToDoController,
      ToursTravelController,
+     AuthController,
 } from "./controller";
 
 const routesHandler = (express: Express, controller: IController) => {
@@ -42,4 +43,5 @@ export const registerRoutesV1 = (express: Express) => {
      routesHandler(express, new AccommodationController());
      routesHandler(express, new ToursTravelController());
      routesHandler(express, new MainCategoriesController());
+     routesHandler(express, new AuthController());
 };

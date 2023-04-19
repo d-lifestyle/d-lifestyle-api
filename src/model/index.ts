@@ -7,3 +7,4 @@ export * from "./main-category.model";
 export * from "./sub-category";
 export * from "./accommodation";
 export * from "./tours-travel";
+export * from "./auth";

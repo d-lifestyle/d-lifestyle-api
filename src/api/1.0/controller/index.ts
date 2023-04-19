@@ -6,3 +6,4 @@ export * from "./sub-category.controller";
 export * from "./accommodation.controller";
 export * from "./tours-travel.controller";
 export * from "./main-category.controller";
+export * from "./auth.controller";

@@ -3,6 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Category } from "model";
 import { CategoriesProps } from "types/categories";
+import { ProtectRoute } from "middleware";
 
 export class CategoriesController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -22,16 +23,19 @@ export class CategoriesController implements IController {
                handler: this.UpdateCategoriesById,
                method: "PUT",
                path: "/categories/:id",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewCategories,
                method: "POST",
                path: "/categories",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteCategoriesById,
                method: "DELETE",
                path: "/categories/:id",
+               middleware: [ProtectRoute],
           });
      }
 
@@ -55,8 +59,8 @@ export class CategoriesController implements IController {
 
      public async AddNewCategories(req: Request, res: Response) {
           try {
-               const { name }: CategoriesProps = req.body;
-               const newCategory = await new Category({ name }).save();
+               const { name, parentCategory }: CategoriesProps = req.body;
+               const newCategory = await new Category({ name, parentCategory }).save();
                return Ok(res, `${newCategory.name} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -80,5 +84,4 @@ export class CategoriesController implements IController {
                return UnAuthorized(res, err);
           }
      }
-
 }

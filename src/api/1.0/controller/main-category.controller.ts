@@ -3,6 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Category, MainCategory } from "model";
 import { MainCategoryProps } from "types/";
+import { ProtectRoute } from "middleware";
 
 export class MainCategoriesController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -22,24 +23,25 @@ export class MainCategoriesController implements IController {
                handler: this.UpdateMainCategoriesById,
                method: "PUT",
                path: "/main-categories/:id",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewMainCategories,
                method: "POST",
                path: "/main-categories",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteMainCategoriesById,
                method: "DELETE",
                path: "/main-categories/:id",
+               middleware: [ProtectRoute],
           });
      }
 
      public async getAllMainCategories(req: Request, res: Response) {
           try {
-               const data = await MainCategory.find().populate({
-                    path: "Category",
-               });
+               const data = await MainCategory.find();
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -57,8 +59,8 @@ export class MainCategoriesController implements IController {
 
      public async AddNewMainCategories(req: Request, res: Response) {
           try {
-               const { Category, displayName }: MainCategoryProps = req.body;
-               const newMainCategory = await new MainCategory({ Category, displayName }).save();
+               const { displayName }: MainCategoryProps = req.body;
+               const newMainCategory = await new MainCategory({ displayName }).save();
                return Ok(res, `${newMainCategory.displayName} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);

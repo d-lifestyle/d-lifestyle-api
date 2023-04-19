@@ -11,7 +11,7 @@
           "build": "tsc --watch"
      },
      "dependencies": {
-          "bcrypt": "^5.0.0",
+          "bcrypt": "^5.1.0",
           "body-parser": "^1.19.0",
           "config": "^3.3.3",
           "cookie-parser": "^1.4.6",
