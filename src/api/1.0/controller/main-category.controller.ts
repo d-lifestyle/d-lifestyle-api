@@ -37,7 +37,9 @@ export class MainCategoriesController implements IController {
 
      public async getAllMainCategories(req: Request, res: Response) {
           try {
-               const data = await MainCategory.find();
+               const data = await MainCategory.find().populate({
+                    path: "Category",
+               });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -55,8 +57,8 @@ export class MainCategoriesController implements IController {
 
      public async AddNewMainCategories(req: Request, res: Response) {
           try {
-               const { CategoryId, displayName }: MainCategoryProps = req.body;
-               const newMainCategory = await new MainCategory({ CategoryId, displayName }).save();
+               const { Category, displayName }: MainCategoryProps = req.body;
+               const newMainCategory = await new MainCategory({ Category, displayName }).save();
                return Ok(res, `${newMainCategory.displayName} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -65,8 +67,11 @@ export class MainCategoriesController implements IController {
 
      public async UpdateMainCategoriesById(req: Request, res: Response) {
           try {
-               const updateCategory = await MainCategory.findOneAndUpdate({ _id: req.params.id }, { $set: req.body });
-               return Ok(res, `${updateCategory.displayName} is updated!`);
+               const updateMainCategory = await MainCategory.findOneAndUpdate(
+                    { _id: req.params.id },
+                    { $set: req.body }
+               );
+               return Ok(res, `${updateMainCategory.displayName} is updated!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }
@@ -75,7 +80,7 @@ export class MainCategoriesController implements IController {
      public async DeleteMainCategoriesById(req: Request, res: Response) {
           try {
                const data = await MainCategory.findByIdAndDelete({ _id: req.params.id });
-               return Ok(res, `${data} is deleted!`);
+               return Ok(res, `${data.displayName} is deleted!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }
