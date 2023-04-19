@@ -2,7 +2,7 @@ module.exports = {
      apps: [
           {
                name: "d-lifestyle-api",
-               cwd: "cross-env DEBUG=app:* nodemon --watch 'src/**/*' -e ts --exec ./node_modules/.bin/ts-node -r tsconfig-paths/register ./src/bin/www.ts",
+               cwd: "/root/dev/zhaogong-be",
                script: "npm",
                args: "start",
                env: {
