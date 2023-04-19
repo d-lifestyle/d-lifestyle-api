@@ -5,13 +5,11 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import config from "config";
-// import dotenv from "dotenv";
 
 import cors, { CorsOptions } from "cors";
 import { errorHandler, notFoundMiddleware } from "middleware";
 import { registerRoutesV1 } from "api";
 
-// dotenv.config();
 const corsOptions: CorsOptions = {
      credentials: true,
      origin: [
