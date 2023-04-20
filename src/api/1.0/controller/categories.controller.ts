@@ -23,19 +23,16 @@ export class CategoriesController implements IController {
                handler: this.UpdateCategoriesById,
                method: "PUT",
                path: "/categories/:id",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewCategories,
                method: "POST",
                path: "/categories",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteCategoriesById,
                method: "DELETE",
                path: "/categories/:id",
-               middleware: [ProtectRoute],
           });
      }
 

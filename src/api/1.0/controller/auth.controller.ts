@@ -5,6 +5,7 @@ import { Ok, UnAuthorized } from "utils";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "config";
+import { ProtectRoute } from "middleware";
 
 export class AuthController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -24,6 +25,12 @@ export class AuthController implements IController {
                handler: this.Logout,
                method: "POST",
                path: "/logout",
+          });
+          this.routes.push({
+               handler: this.Profile,
+               method: "GET",
+               path: "/profile",
+               middleware: [ProtectRoute],
           });
      }
 
@@ -58,7 +65,7 @@ export class AuthController implements IController {
      public async Login(req: Request, res: Response) {
           try {
                const { email, password }: LoginProps = req.body;
-               const user = await User.findOne({ email: email });
+               const user = await User.findOne({ email: email }).select("email password");
 
                if (!email || !password) {
                     return UnAuthorized(res, "all field is required");
@@ -77,6 +84,7 @@ export class AuthController implements IController {
                     {
                          _id: user._id,
                          email: user.email,
+                         password: user.password,
                     },
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
@@ -85,10 +93,10 @@ export class AuthController implements IController {
                res.cookie("access_token", token, {
                     maxAge: 2 * 60 * 60 * 1000,
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
+                    // secure: process.env.NODE_ENV === "development",
                });
 
-               return Ok(res, { email, token });
+               return Ok(res, { user, token });
           } catch (err) {
                return UnAuthorized(res, err);
           }
@@ -97,6 +105,17 @@ export class AuthController implements IController {
           try {
                res.clearCookie("access_token");
                return Ok(res, "Logged out successfully");
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+     public async Profile(req: Request, res: Response) {
+          try {
+               const token = req.cookies.access_token;
+               const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
+               const user = await User.findById({ _id: verifyToken._id }).select("email password isAdmin");
+
+               return Ok(res, user);
           } catch (err) {
                return UnAuthorized(res, err);
           }

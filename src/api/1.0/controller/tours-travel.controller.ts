@@ -22,19 +22,16 @@ export class ToursTravelController implements IController {
                handler: this.UpdateToursTravelById,
                method: "PUT",
                path: "/tours-travel/:id",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewToursTravel,
                method: "POST",
                path: "/tours-travel",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteToursTravelById,
                method: "DELETE",
                path: "/tours-travel/:id",
-               middleware: [ProtectRoute],
           });
      }
 

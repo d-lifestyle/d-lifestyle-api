@@ -28,20 +28,17 @@ export class SubCategoryController implements IController {
                handler: this.AddNewSubCategory,
                method: "POST",
                path: "/sub-category",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteSubCategoryById,
                method: "DELETE",
                path: "/sub-category/:id",
-               middleware: [ProtectRoute],
           });
 
           this.routes.push({
                handler: this.GetSubCategoryByCategoryId,
                method: "GET",
                path: "/sub-category/category/:id",
-               middleware: [ProtectRoute],
           });
      }
 
