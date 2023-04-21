@@ -44,7 +44,12 @@ export class SubCategoryController implements IController {
 
      public async getAllSubCategory(req: Request, res: Response) {
           try {
-               const data = await SubCategory.find().sort({ createdAt: -1 }).populate("CategoryId");
+               const data = await SubCategory.find()
+                    .sort({ createdAt: -1 })
+                    .populate({
+                         path: "CategoryId",
+                         populate: { path: "parentCategory" },
+                    });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);

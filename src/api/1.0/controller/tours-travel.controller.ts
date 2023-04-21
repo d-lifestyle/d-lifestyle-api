@@ -40,7 +40,11 @@ export class ToursTravelController implements IController {
                const data = await ToursTravel.find().populate({
                     path: "SubCategory",
                     select: "name",
-                    populate: { path: "CategoryId", select: "name" },
+                    populate: {
+                         path: "CategoryId",
+                         select: "name",
+                         populate: { path: "parentCategory", select: "displayName" },
+                    },
                });
                return Ok(res, data);
           } catch (err) {

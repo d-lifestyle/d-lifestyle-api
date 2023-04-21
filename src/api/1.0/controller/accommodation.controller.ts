@@ -22,19 +22,16 @@ export class AccommodationController implements IController {
                handler: this.UpdateAccommodationById,
                method: "PUT",
                path: "/accommodation/:id",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.AddNewAccommodation,
                method: "POST",
                path: "/accommodation",
-               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.DeleteAccommodationById,
                method: "DELETE",
                path: "/accommodation/:id",
-               middleware: [ProtectRoute],
           });
      }
 
@@ -43,7 +40,11 @@ export class AccommodationController implements IController {
                const data = await Accommodation.find().populate({
                     path: "SubCategory",
                     select: "name",
-                    populate: { path: "CategoryId", select: "name" },
+                    populate: {
+                         path: "CategoryId",
+                         select: "name",
+                         populate: { path: "parentCategory", select: "displayName" },
+                    },
                });
                return Ok(res, data);
           } catch (err) {

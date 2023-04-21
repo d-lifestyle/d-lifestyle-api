@@ -1,9 +1,10 @@
 import { IController, IControllerRoutes } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
-import { Category } from "model";
+import { Category, MainCategory } from "model";
 import { CategoriesProps } from "types/categories";
 import { ProtectRoute } from "middleware";
+import mongoose from "mongoose";
 
 export class CategoriesController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -38,7 +39,9 @@ export class CategoriesController implements IController {
 
      public async getAllCategories(req: Request, res: Response) {
           try {
-               const data = await Category.find();
+               const data = await Category.find().populate({
+                    path: "parentCategory",
+               });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -47,7 +50,8 @@ export class CategoriesController implements IController {
 
      public async GetCategoriesById(req: Request, res: Response) {
           try {
-               const data = await Category.findById({ _id: req.params.id });
+               const data = await Category.findById({ _id: req.params.id }).populate("parentCategory");
+               console.log(data);
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -57,6 +61,7 @@ export class CategoriesController implements IController {
      public async AddNewCategories(req: Request, res: Response) {
           try {
                const { name, parentCategory }: CategoriesProps = req.body;
+               console.log(name, parentCategory);
                const newCategory = await new Category({ name, parentCategory }).save();
                return Ok(res, `${newCategory.name} is created!`);
           } catch (err) {
