@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AdminRoutes, ProtectRoute } from "middleware";
 import { IController, IControllerRoutes } from "types";
 import { Ok, UnAuthorized } from "utils";
 
@@ -9,6 +10,7 @@ export class HomePageController implements IController {
                handler: this.Homepage,
                path: "/",
                method: "GET",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

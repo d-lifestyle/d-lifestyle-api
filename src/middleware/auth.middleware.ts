@@ -15,7 +15,7 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           // if token present than verify
           const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
           // console.log("verifying user", verifyToken);
-          const user = await User.findOne({ _id: verifyToken._id });
+          const user = await User.findById({ _id: verifyToken._id });
           if (!user) {
                return UnAuthorized(res, "token is not valid");
           }
@@ -26,5 +26,22 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           next();
      } catch (err) {
           return UnAuthorized(res, err.message);
+     }
+};
+
+export const AdminRoutes = async (req: Request, res: Response, next: NextFunction) => {
+     try {
+          const token = req.cookies.access_token;
+          if (!token) {
+               UnAuthorized(res, "please login and try again");
+          }
+          const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
+          const user = await User.findById({ _id: verifyToken._id });
+          if (!user.isAdmin) {
+               return UnAuthorized(res, "you are not allowed to accessing this page");
+          }
+          next();
+     } catch (err) {
+          return UnAuthorized(res, err);
      }
 };

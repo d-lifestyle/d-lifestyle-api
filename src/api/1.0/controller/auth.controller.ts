@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "model";
-import { IController, IControllerRoutes, LoginProps } from "types";
+import { IController, IControllerRoutes, LoginProps, RegisterProps } from "types";
 import { Ok, UnAuthorized } from "utils";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -25,6 +25,7 @@ export class AuthController implements IController {
                handler: this.Logout,
                method: "POST",
                path: "/logout",
+               middleware: [ProtectRoute],
           });
           this.routes.push({
                handler: this.Profile,
@@ -41,12 +42,10 @@ export class AuthController implements IController {
                const hashedPassword = bcrypt.hashSync(password, 10);
 
                if (!email || !password) {
-                    // console.log("field error");
                     return UnAuthorized(res, "all field is required");
                }
 
                if (UserExist) {
-                    // console.log("existed error");
                     return UnAuthorized(res, "user is already exist with this email");
                }
 
@@ -65,7 +64,7 @@ export class AuthController implements IController {
      public async Login(req: Request, res: Response) {
           try {
                const { email, password }: LoginProps = req.body;
-               const user = await User.findOne({ email: email }).select("email password");
+               const user = await User.findOne({ email: email }).select("email password isAdmin");
 
                if (!email || !password) {
                     return UnAuthorized(res, "all field is required");
@@ -85,6 +84,7 @@ export class AuthController implements IController {
                          _id: user._id,
                          email: user.email,
                          password: user.password,
+                         isAdmin: user.isAdmin,
                     },
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
