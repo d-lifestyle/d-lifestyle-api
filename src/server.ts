@@ -64,6 +64,7 @@ class App {
                .connect(process.env.DB_PATH || config.get("DB_PATH"), {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
+                    useFindAndModify: false,
                })
                .then(() => {
                     console.log("connected to database");

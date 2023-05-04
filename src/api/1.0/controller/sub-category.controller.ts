@@ -3,7 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { SubCategory } from "model";
 import * as mongoose from "mongoose";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 
 export class SubCategoryController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -28,17 +28,20 @@ export class SubCategoryController implements IController {
                handler: this.AddNewSubCategory,
                method: "POST",
                path: "/sub-category",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteSubCategoryById,
                method: "DELETE",
                path: "/sub-category/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
 
           this.routes.push({
                handler: this.GetSubCategoryByCategoryId,
                method: "GET",
                path: "/sub-category/category/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

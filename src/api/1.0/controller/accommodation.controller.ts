@@ -66,8 +66,15 @@ export class AccommodationController implements IController {
 
      public async AddNewAccommodation(req: Request, res: Response) {
           try {
-               const { city, displayName, state, SubCategory }: AccommodationProps = req.body;
-               const newAccommodation = await new Accommodation({ city, displayName, state, SubCategory }).save();
+               const { city, displayName, state, SubCategory, description, image }: AccommodationProps = req.body;
+               const newAccommodation = await new Accommodation({
+                    city,
+                    displayName,
+                    state,
+                    SubCategory,
+                    description,
+                    image,
+               }).save();
                return Ok(res, `${newAccommodation.displayName} is created!`);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -89,7 +96,7 @@ export class AccommodationController implements IController {
      public async DeleteAccommodationById(req: Request, res: Response) {
           try {
                const data = await Accommodation.findByIdAndDelete({ _id: req.params.id });
-               return Ok(res, `${data} is deleted!`);
+               return Ok(res, `${data.displayName} is deleted!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }

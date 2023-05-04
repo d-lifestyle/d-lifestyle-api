@@ -3,7 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Category, MainCategory } from "model";
 import { MainCategoryProps } from "types/";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 
 export class MainCategoriesController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -23,16 +23,19 @@ export class MainCategoriesController implements IController {
                handler: this.UpdateMainCategoriesById,
                method: "PUT",
                path: "/main-categories/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.AddNewMainCategories,
                method: "POST",
                path: "/main-categories",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteMainCategoriesById,
                method: "DELETE",
                path: "/main-categories/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

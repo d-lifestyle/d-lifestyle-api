@@ -2,7 +2,7 @@ import { IController, IControllerRoutes, ToursTravelProps } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { ToursTravel } from "model";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 
 export class ToursTravelController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -22,16 +22,19 @@ export class ToursTravelController implements IController {
                handler: this.UpdateToursTravelById,
                method: "PUT",
                path: "/tours-travel/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.AddNewToursTravel,
                method: "POST",
                path: "/tours-travel",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteToursTravelById,
                method: "DELETE",
                path: "/tours-travel/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 
@@ -67,7 +70,8 @@ export class ToursTravelController implements IController {
 
      public async AddNewToursTravel(req: Request, res: Response) {
           try {
-               const { code, displayName, duration, place, theme, SubCategory }: ToursTravelProps = req.body;
+               const { code, displayName, duration, place, theme, SubCategory, description, image }: ToursTravelProps =
+                    req.body;
                const newToursTravel = await new ToursTravel({
                     code,
                     displayName,
@@ -75,6 +79,8 @@ export class ToursTravelController implements IController {
                     place,
                     theme,
                     SubCategory,
+                    description,
+                    image,
                }).save();
                return Ok(res, `${newToursTravel.displayName} is created!`);
           } catch (err) {

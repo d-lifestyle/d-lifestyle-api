@@ -3,7 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Category, MainCategory } from "model";
 import { CategoriesProps } from "types/categories";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 import mongoose from "mongoose";
 
 export class CategoriesController implements IController {
@@ -24,16 +24,19 @@ export class CategoriesController implements IController {
                handler: this.UpdateCategoriesById,
                method: "PUT",
                path: "/categories/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.AddNewCategories,
                method: "POST",
                path: "/categories",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteCategoriesById,
                method: "DELETE",
                path: "/categories/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

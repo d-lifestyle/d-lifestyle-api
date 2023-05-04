@@ -2,6 +2,11 @@ import * as Mongoose from "mongoose";
 
 export interface AccommodationProps {
      displayName: string;
+     image: {
+          image: string;
+          title: string;
+     }[];
+     description: string;
      city: string;
      state: string;
      SubCategory: Mongoose.Schema.Types.ObjectId;
@@ -12,6 +17,8 @@ export interface AccommodationProps {
 
 export interface ToursTravelProps {
      displayName: string;
+     image: string[];
+     description: string;
      code: string;
      duration: string;
      place: string;

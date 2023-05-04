@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { CarouselProps, IController, IControllerRoutes } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Carousel } from "model";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 
 export class CarouselController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -23,19 +23,19 @@ export class CarouselController implements IController {
                handler: this.UpdateCarouselById,
                method: "PUT",
                path: "/carousel/:id",
-               middleware: [ProtectRoute],
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.AddNewCarousel,
                method: "POST",
                path: "/carousel",
-               middleware: [ProtectRoute],
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteCarouselById,
                method: "DELETE",
                path: "/carousel/:id",
-               middleware: [ProtectRoute],
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

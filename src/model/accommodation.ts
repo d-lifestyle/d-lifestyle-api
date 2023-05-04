@@ -12,6 +12,13 @@ const AccommodationSchema: mongoose.Schema<
           city: { type: mongoose.Schema.Types.String, required: true },
           state: { type: mongoose.Schema.Types.String, required: true },
           SubCategory: { type: mongoose.Schema.Types.ObjectId, ref: "SubCategory", required: true },
+          image: [
+               {
+                    image: { type: mongoose.Schema.Types.String, required: true },
+                    title: { type: mongoose.Schema.Types.String, required: true },
+               },
+          ],
+          description: { type: mongoose.Schema.Types.String, required: true },
      },
      {
           timestamps: true,
