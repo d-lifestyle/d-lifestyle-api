@@ -116,7 +116,7 @@ export class AuthController implements IController {
                res.cookie("access_token", token, {
                     maxAge: 2 * 60 * 60 * 1000,
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "development",
+                    secure: process.env.NODE_ENV === "production",
                });
                return Ok(res, {
                     user: {
