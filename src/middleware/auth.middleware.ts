@@ -41,6 +41,7 @@ export const AdminRoutes = async (req: Request, res: Response, next: NextFunctio
      try {
           const token = req.cookies.access_token;
           if (!token) {
+               console.log("admin log");
                UnAuthorized(res, "please login and try again");
           }
           const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
