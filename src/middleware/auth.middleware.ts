@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import config from "config";
 import jwt from "jsonwebtoken";
 import { User } from "model";
-import { UnAuthorized } from "utils";
+import { BadRequest, Forbidden, UnAuthorized } from "utils";
+import moment from "moment";
 
 export const ProtectRoute = async (req: Request, res: Response, next: NextFunction) => {
      try {
@@ -14,7 +15,14 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           }
           // if token present than verify
           const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
-          // console.log("verifying user", verifyToken);
+
+          const currentTime = moment().format("DD/MM/YYYY hh:mm:ss");
+          const expTime = moment(verifyToken.exp).format("DD/MM/YYY hh:mm");
+          // console.log("exp timer", expTime, "current timer", currentTime);
+          if (currentTime >= expTime) {
+               return Forbidden(res, "session expire please login again");
+          }
+
           const user = await User.findById({ _id: verifyToken._id });
           if (!user) {
                return UnAuthorized(res, "token is not valid");

@@ -54,7 +54,7 @@ export class CategoriesController implements IController {
      public async GetCategoriesById(req: Request, res: Response) {
           try {
                const data = await Category.findById({ _id: req.params.id }).populate("parentCategory");
-               console.log(data);
+               // console.log(data);
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -64,7 +64,7 @@ export class CategoriesController implements IController {
      public async AddNewCategories(req: Request, res: Response) {
           try {
                const { name, parentCategory }: CategoriesProps = req.body;
-               console.log(name, parentCategory);
+               // console.log(name, parentCategory);
                const newCategory = await new Category({ name, parentCategory }).save();
                return Ok(res, `${newCategory.name} is created!`);
           } catch (err) {

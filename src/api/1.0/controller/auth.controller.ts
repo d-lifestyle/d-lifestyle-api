@@ -60,12 +60,12 @@ export class AuthController implements IController {
                const UserExist = await User.findOne({ email: email });
 
                if (!email || !password || !aboutInfo || !contactInfo || !firstName || !lastName) {
-                    console.log("validation error");
+                    // console.log("validation error");
                     return UnAuthorized(res, "all field is required");
                }
 
                if (UserExist) {
-                    console.log("user exist");
+                    // console.log("user exist");
                     return UnAuthorized(res, "user is already exist with this email");
                }
 
@@ -81,7 +81,7 @@ export class AuthController implements IController {
 
                return Ok(res, `${newuser.email} is successfully registered with us!`);
           } catch (err) {
-               console.log("error", err);
+               // console.log("error", err);
                return UnAuthorized(res, err);
           }
      }
@@ -116,7 +116,7 @@ export class AuthController implements IController {
                res.cookie("access_token", token, {
                     maxAge: 2 * 60 * 60 * 1000,
                     httpOnly: true,
-                    // secure: process.env.NODE_ENV === "development",
+                    secure: process.env.NODE_ENV === "development",
                });
                return Ok(res, {
                     user: {
@@ -167,10 +167,11 @@ export class AuthController implements IController {
                          return Ok(res, `${response.firstName} ${response.lastName} is updated successfully`);
                     })
                     .catch((err) => {
-                         console.log(err);
+                         // console.log(err);
+                         return UnAuthorized(res, err);
                     });
           } catch (err) {
-               console.log(err);
+               // console.log(err);
                return UnAuthorized(res, err);
           }
      }
