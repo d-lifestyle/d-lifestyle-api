@@ -118,8 +118,7 @@ export class AuthController implements IController {
                     maxAge: expiresIn,
                     httpOnly: true,
                     signed: false,
-                    sameSite: "lax",
-                    secure: process.env.NODE_ENV === "production",
+                    secure: false,
                });
                return Ok(res, {
                     message: `${user.firstName} ${user.lastName} is logged in`,
