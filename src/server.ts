@@ -27,7 +27,6 @@ const corsOptions: CorsOptions = {
           "https://dlifestyletc.com/",
           "https://dlifestyletc.com",
      ],
-     optionsSuccessStatus: 200,
 };
 
 class App {
@@ -49,6 +48,15 @@ class App {
           this.express.use(cookieParser());
           this.express.use(cors(corsOptions));
           this.express.use(morgan("dev"));
+          this.express.use(function (req, res, next) {
+               res.header("Access-Control-Allow-Credentials", true as any);
+               res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,UPDATE,OPTIONS");
+               res.header(
+                    "Access-Control-Allow-Headers",
+                    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+               );
+               next();
+          });
      }
 
      private useErrorHandler() {

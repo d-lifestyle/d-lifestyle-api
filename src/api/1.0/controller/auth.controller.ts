@@ -90,7 +90,7 @@ export class AuthController implements IController {
           try {
                const { email, password }: LoginProps = req.body;
                const user = await User.findOne({ email: email });
-
+               console.log(user);
                if (!email || !password) {
                     return UnAuthorized(res, "all field is required");
                }
@@ -112,17 +112,16 @@ export class AuthController implements IController {
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
                );
-               const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
-               res.cookie("access_token", token, {
-                    maxAge: expiresIn,
+               console.log("token is set", token);
+               res.cookie("token", token, {
                     httpOnly: true,
-                    signed: false,
                     secure: false,
                });
+               console.log("cookie token", req.cookies.token);
                return Ok(res, {
                     message: `${user.firstName} ${user.lastName} is logged in`,
-                    token,
+                    token: req.cookies.token,
                });
           } catch (err) {
                return UnAuthorized(res, err);
@@ -130,7 +129,7 @@ export class AuthController implements IController {
      }
      public async Logout(req: Request, res: Response) {
           try {
-               res.clearCookie("access_token");
+               res.clearCookie("token");
                return Ok(res, "Logged out successfully");
           } catch (err) {
                return UnAuthorized(res, err);
@@ -138,7 +137,7 @@ export class AuthController implements IController {
      }
      public async Profile(req: Request, res: Response) {
           try {
-               const token = req.cookies.access_token;
+               const token = req.cookies.token;
                const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
                const user = await User.findById({ _id: verifyToken._id });
                return Ok(res, user);
