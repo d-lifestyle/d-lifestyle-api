@@ -121,12 +121,7 @@ export class AuthController implements IController {
                     secure: false,
                });
                return Ok(res, {
-                    user: {
-                         id: user._id,
-                         email: user.email,
-                         fname: user.firstName,
-                         lname: user.lastName,
-                    },
+                    message: `${user.firstName} ${user.lastName} is logged in`,
                     token,
                });
           } catch (err) {
