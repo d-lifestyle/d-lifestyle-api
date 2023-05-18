@@ -112,12 +112,13 @@ export class AuthController implements IController {
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
                );
+               const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
                res.cookie("access_token", token, {
-                    // maxAge: 2 * 60 * 60 * 1000,
+                    maxAge: expiresIn,
                     httpOnly: true,
                     signed: false,
-                    // secure: process.env.NODE_ENV === "development",
+                    secure: false,
                });
                return Ok(res, {
                     user: {

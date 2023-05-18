@@ -42,11 +42,10 @@ export class CategoriesController implements IController {
 
      public async getAllCategories(req: Request, res: Response) {
           try {
-               const data = await Category.find()
-                    .populate({
-                         path: "parentCategory",
-                    })
-                    .sort({ createdAt: -1 });
+               const data = await Category.find().populate({
+                    path: "parentCategory",
+               });
+               // .sort({ createdAt: -1 });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
