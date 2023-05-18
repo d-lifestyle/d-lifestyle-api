@@ -42,9 +42,11 @@ export class CategoriesController implements IController {
 
      public async getAllCategories(req: Request, res: Response) {
           try {
-               const data = await Category.find().populate({
-                    path: "parentCategory",
-               });
+               const data = await Category.find()
+                    .populate({
+                         path: "parentCategory",
+                    })
+                    .sort({ createdAt: -1 });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -84,7 +86,7 @@ export class CategoriesController implements IController {
      public async DeleteCategoriesById(req: Request, res: Response) {
           try {
                const data = await Category.findByIdAndDelete({ _id: req.params.id });
-               return Ok(res, `${data} is deleted!`);
+               return Ok(res, `${data.name} is deleted!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }

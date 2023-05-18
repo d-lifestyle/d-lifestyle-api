@@ -100,7 +100,7 @@ export class AuthController implements IController {
                }
 
                if (!bcrypt.compareSync(password, user.password)) {
-                    // console.log("password error");
+                    console.log("password error");
                     return UnAuthorized(res, "invalid credentials");
                }
 
@@ -114,8 +114,9 @@ export class AuthController implements IController {
                );
 
                res.cookie("access_token", token, {
-                    maxAge: 2 * 60 * 60 * 1000,
+                    // maxAge: 2 * 60 * 60 * 1000,
                     httpOnly: true,
+                    signed: false,
                     // secure: process.env.NODE_ENV === "development",
                });
                return Ok(res, {

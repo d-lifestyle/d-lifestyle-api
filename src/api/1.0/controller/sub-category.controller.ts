@@ -94,7 +94,7 @@ export class SubCategoryController implements IController {
      public async DeleteSubCategoryById(req: Request, res: Response) {
           try {
                const data = await SubCategory.findByIdAndDelete({ _id: req.params.id });
-               return Ok(res, `${data} is deleted!`);
+               return Ok(res, `${data.name} is deleted!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }

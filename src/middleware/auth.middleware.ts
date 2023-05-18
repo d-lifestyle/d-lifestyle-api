@@ -11,6 +11,7 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           const token = req.cookies.access_token;
           // if no token
           if (!token) {
+               console.log("token not found");
                return UnAuthorized(res, "please login and try again");
           }
           // if token present than verify
@@ -20,14 +21,18 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           const expTime = moment(verifyToken.exp).format("DD/MM/YYY hh:mm");
           // console.log("exp timer", expTime, "current timer", currentTime);
           if (currentTime >= expTime) {
+               console.log("session error");
                return Forbidden(res, "session expire please login again");
           }
 
           const user = await User.findById({ _id: verifyToken._id });
           if (!user) {
+               console.log("no user found or invalid");
+
                return UnAuthorized(res, "token is not valid");
           }
           if (!verifyToken) {
+               console.log("token invalid");
                return UnAuthorized(res, "invalid token");
           }
           // go ahead if all true

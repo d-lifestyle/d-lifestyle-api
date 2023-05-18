@@ -17,7 +17,10 @@ export interface AccommodationProps {
 
 export interface ToursTravelProps {
      displayName: string;
-     image: string[];
+     image: {
+          image: string;
+          title: string;
+     }[];
      description: string;
      code: string;
      duration: string;

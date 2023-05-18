@@ -37,15 +37,17 @@ export class AccommodationController implements IController {
 
      public async getAllAccommodation(req: Request, res: Response) {
           try {
-               const data = await Accommodation.find().populate({
-                    path: "SubCategory",
-                    select: "name",
-                    populate: {
-                         path: "CategoryId",
+               const data = await Accommodation.find()
+                    .populate({
+                         path: "SubCategory",
                          select: "name",
-                         populate: { path: "parentCategory", select: "displayName" },
-                    },
-               });
+                         populate: {
+                              path: "CategoryId",
+                              select: "name",
+                              populate: { path: "parentCategory", select: "displayName" },
+                         },
+                    })
+                    .sort({ createdAt: -1 });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);

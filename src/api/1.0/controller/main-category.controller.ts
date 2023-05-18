@@ -41,7 +41,7 @@ export class MainCategoriesController implements IController {
 
      public async getAllMainCategories(req: Request, res: Response) {
           try {
-               const data = await MainCategory.find();
+               const data = await MainCategory.find().sort({ createdAt: -1 });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);

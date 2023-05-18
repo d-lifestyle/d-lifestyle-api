@@ -9,7 +9,12 @@ const ToursTravelSchema = new mongoose.Schema<ToursTravelProps>(
           place: { type: mongoose.Schema.Types.String, required: true },
           theme: { type: mongoose.Schema.Types.String, required: true },
           SubCategory: { type: mongoose.Schema.Types.ObjectId, ref: "SubCategory", required: true },
-          image: [{ type: mongoose.Schema.Types.String, required: true }],
+          image: [
+               {
+                    image: { type: mongoose.Schema.Types.String, required: true },
+                    title: { type: mongoose.Schema.Types.String, required: true },
+               },
+          ],
           description: { type: mongoose.Schema.Types.String, required: true },
      },
      {
