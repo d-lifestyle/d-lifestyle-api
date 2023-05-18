@@ -90,12 +90,13 @@ export class AuthController implements IController {
           try {
                const { email, password }: LoginProps = req.body;
                const user = await User.findOne({ email: email });
-               console.log(user);
                if (!email || !password) {
+                    console.log("field error");
                     return UnAuthorized(res, "all field is required");
                }
 
                if (!user) {
+                    console.log("no user");
                     return UnAuthorized(res, "no user found or invalid credentials");
                }
 
@@ -116,14 +117,16 @@ export class AuthController implements IController {
                console.log("token is set", token);
                res.cookie("token", token, {
                     httpOnly: true,
-                    secure: false,
+                    secure: process.env.NODE_ENV === "production" ? true : false,
+                    path: "/",
                });
                console.log("cookie token", req.cookies.token);
                return Ok(res, {
                     message: `${user.firstName} ${user.lastName} is logged in`,
-                    token: req.cookies.token,
+                    token: token,
                });
           } catch (err) {
+               console.log(err);
                return UnAuthorized(res, err);
           }
      }

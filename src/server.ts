@@ -12,21 +12,7 @@ import { registerRoutesV1 } from "api";
 
 const corsOptions: CorsOptions = {
      credentials: true,
-     origin: [
-          "http://localhost:3000/",
-          "http://localhost:3000",
-          "localhost:3000",
-          "http://192.168.0.103:3000/",
-          "http://192.168.0.103:3000",
-          "http://localhost:3001/",
-          "http://localhost:3001",
-          "https://dlifestyletc.netlify.app/",
-          "https://dlifestyletc.netlify.app",
-          "https://dlifestyleadmin.netlify.app/",
-          "https://dlifestyleadmin.netlify.app",
-          "https://dlifestyletc.com/",
-          "https://dlifestyletc.com",
-     ],
+     origin: ["http://localhost:3000"],
 };
 
 class App {
@@ -45,18 +31,9 @@ class App {
      private middleware(): void {
           this.express.use(bodyParser.json());
           this.express.use(bodyParser.urlencoded({ extended: true }));
-          this.express.use(cookieParser());
+          this.express.use(cookieParser("secret"));
           this.express.use(cors(corsOptions));
           this.express.use(morgan("dev"));
-          this.express.use(function (req, res, next) {
-               res.header("Access-Control-Allow-Credentials", true as any);
-               res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,UPDATE,OPTIONS");
-               res.header(
-                    "Access-Control-Allow-Headers",
-                    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-               );
-               next();
-          });
      }
 
      private useErrorHandler() {
