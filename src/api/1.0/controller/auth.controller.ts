@@ -118,7 +118,7 @@ export class AuthController implements IController {
                     maxAge: expiresIn,
                     httpOnly: true,
                     signed: false,
-                    sameSite: "strict",
+                    sameSite: "lax",
                     secure: process.env.NODE_ENV === "production",
                });
                return Ok(res, {
