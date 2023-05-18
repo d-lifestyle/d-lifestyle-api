@@ -24,6 +24,8 @@ const corsOptions: CorsOptions = {
           "https://dlifestyletc.netlify.app",
           "https://dlifestyleadmin.netlify.app/",
           "https://dlifestyleadmin.netlify.app",
+          "https://dlifestyletc.com/",
+          "https://dlifestyletc.com",
      ],
      optionsSuccessStatus: 200,
 };
