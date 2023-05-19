@@ -3,8 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import config from "config";
 import jwt from "jsonwebtoken";
 import { User } from "model";
-import { Forbidden, UnAuthorized } from "utils";
-import moment from "moment";
+import { UnAuthorized } from "utils";
 
 export const ProtectRoute = async (req: Request, res: Response, next: NextFunction) => {
      try {

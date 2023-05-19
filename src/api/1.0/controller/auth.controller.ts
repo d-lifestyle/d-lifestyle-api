@@ -116,9 +116,9 @@ export class AuthController implements IController {
 
                console.log("token is set", token);
                res.cookie("token", token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production" ? true : false,
-                    path: "/",
+                    // httpOnly: true,
+                    // secure: process.env.NODE_ENV === "production" ? true : false,
+                    // path: "/",
                });
                console.log("cookie token", req.cookies.token);
                return Ok(res, {
