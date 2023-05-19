@@ -113,12 +113,14 @@ export class AuthController implements IController {
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
                );
+               var now = Date.now();
 
                console.log("token is set", token);
                res.cookie("token", token, {
-                    // httpOnly: true,
-                    // secure: process.env.NODE_ENV === "production" ? true : false,
-                    // path: "/",
+                    httpOnly: true,
+                    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+                    secure: process.env.NODE_ENV === "production",
+                    expires: new Date(new Date(now).setHours(now + 3)),
                });
                console.log("cookie token", req.cookies.token);
                return Ok(res, {

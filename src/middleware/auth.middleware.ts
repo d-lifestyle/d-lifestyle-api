@@ -8,6 +8,7 @@ import { UnAuthorized } from "utils";
 export const ProtectRoute = async (req: Request, res: Response, next: NextFunction) => {
      try {
           const token = req.cookies.token;
+          console.log("token", token);
           // if no token
           if (!token) {
                console.log("token not found");
