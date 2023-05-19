@@ -48,7 +48,7 @@ export class AuthController implements IController {
           this.routes.push({
                handler: this.DeleteUserByAdmin,
                method: "DELETE",
-               path: "/my-user/:id",
+               path: "/my-user/:deletionId",
                middleware: [ProtectRoute, AdminRoutes],
           });
      }
@@ -60,12 +60,10 @@ export class AuthController implements IController {
                const UserExist = await User.findOne({ email: email });
 
                if (!email || !password || !aboutInfo || !contactInfo || !firstName || !lastName) {
-                    // console.log("validation error");
                     return UnAuthorized(res, "all field is required");
                }
 
                if (UserExist) {
-                    // console.log("user exist");
                     return UnAuthorized(res, "user is already exist with this email");
                }
 
@@ -81,7 +79,6 @@ export class AuthController implements IController {
 
                return Ok(res, `${newuser.email} is successfully registered with us!`);
           } catch (err) {
-               // console.log("error", err);
                return UnAuthorized(res, err);
           }
      }
@@ -91,17 +88,14 @@ export class AuthController implements IController {
                const { email, password }: LoginProps = req.body;
                const user = await User.findOne({ email: email });
                if (!email || !password) {
-                    console.log("field error");
                     return UnAuthorized(res, "all field is required");
                }
 
                if (!user) {
-                    console.log("no user");
                     return UnAuthorized(res, "no user found or invalid credentials");
                }
 
                if (!bcrypt.compareSync(password, user.password)) {
-                    console.log("password error");
                     return UnAuthorized(res, "invalid credentials");
                }
 
@@ -113,28 +107,20 @@ export class AuthController implements IController {
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
                );
-               var now = Date.now();
 
-               console.log("token is set", token);
-               res.cookie("token", token, {
-                    httpOnly: true,
-                    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-                    secure: process.env.NODE_ENV === "production",
-                    expires: new Date(new Date(now).setHours(now + 3)),
-               });
-               console.log("cookie token", req.cookies.token);
                return Ok(res, {
                     message: `${user.firstName} ${user.lastName} is logged in`,
                     token: token,
                });
           } catch (err) {
-               console.log(err);
                return UnAuthorized(res, err);
           }
      }
      public async Logout(req: Request, res: Response) {
           try {
+               res.removeHeader("Authorization");
                res.clearCookie("token");
+               res.clearCookie("access_token");
                return Ok(res, "Logged out successfully");
           } catch (err) {
                return UnAuthorized(res, err);
@@ -142,7 +128,7 @@ export class AuthController implements IController {
      }
      public async Profile(req: Request, res: Response) {
           try {
-               const token = req.cookies.token;
+               const token = req.headers.authorization;
                const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
                const user = await User.findById({ _id: verifyToken._id });
                return Ok(res, user);
@@ -191,9 +177,9 @@ export class AuthController implements IController {
      public async DeleteUserByAdmin(req: Request, res: Response) {
           try {
                const { deletionId } = req.params;
-
-               const deleteUser = await User.findByIdAndDelete({ _id: deletionId });
-               return Ok(res, `${deleteUser.firstName} ${deleteUser.lastName} is deleted`);
+               const data = await User.findById({ _id: req.params.deletionId });
+               await User.findByIdAndDelete({ _id: deletionId });
+               return Ok(res, `${data.firstName} ${data.lastName} is deleted`);
           } catch (err) {
                return UnAuthorized(res, err);
           }

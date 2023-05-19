@@ -7,31 +7,19 @@ import { UnAuthorized } from "utils";
 
 export const ProtectRoute = async (req: Request, res: Response, next: NextFunction) => {
      try {
-          const token = req.cookies.token;
-          console.log("token", token);
+          const token = req.headers.authorization;
           // if no token
           if (!token) {
-               console.log("token not found");
                return UnAuthorized(res, "please login and try again");
           }
           // if token present than verify
           const verifyToken = jwt.verify(token, process.env.JWT_SECRET || config.get("JWT_SECRET")) as any;
 
-          // const currentTime = moment().format("DD/MM/YYYY hh:mm:ss");
-          // const expTime = moment(verifyToken.exp).format("DD/MM/YYY hh:mm");
-          //  console.log("exp timer", expTime, "current timer", currentTime);
-          // if (currentTime >= expTime) {
-          //      console.log("session error");
-          //      return Forbidden(res, "session expire please login again");
-          // }
-
           const user = await User.findById({ _id: verifyToken._id });
           if (!user) {
-               console.log("no user found or invalid");
                return UnAuthorized(res, "token is not valid");
           }
           if (!verifyToken) {
-               console.log("token invalid");
                return UnAuthorized(res, "invalid token");
           }
           // go ahead if all true
@@ -43,7 +31,8 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
 
 export const AdminRoutes = async (req: Request, res: Response, next: NextFunction) => {
      try {
-          const token = req.cookies.token;
+          const token = req.headers.authorization;
+
           if (!token) {
                return UnAuthorized(res, "please login and try again");
           }

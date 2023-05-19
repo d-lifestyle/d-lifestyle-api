@@ -19,7 +19,6 @@ export class HomePageController implements IController {
                const data = "Hello api is responding";
                return Ok(res, data);
           } catch (err) {
-               // console.log(err);
                return UnAuthorized(res, err);
           }
      }
