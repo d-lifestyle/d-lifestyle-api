@@ -12,7 +12,7 @@ import { registerRoutesV1 } from "api";
 
 const corsOptions: CorsOptions = {
      credentials: true,
-     origin: ["http://localhost:3000"],
+     origin: ["http://localhost:3000", "http://localhost:3001"],
 };
 
 class App {

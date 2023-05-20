@@ -7,5 +7,7 @@ export * from "./carousel.types";
 
 // content features
 export * from "./sub-category";
-export * from './content.types'
-export * from './main-category'
+export * from "./content.types";
+export * from "./main-category";
+export * from "./blog.types";
+export * from "./general.types";

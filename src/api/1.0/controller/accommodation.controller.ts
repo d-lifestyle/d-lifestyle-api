@@ -2,7 +2,7 @@ import { AccommodationProps, IController, IControllerRoutes } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Accommodation } from "model/accommodation";
-import { ProtectRoute } from "middleware";
+import { AdminRoutes, ProtectRoute } from "middleware";
 
 export class AccommodationController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -22,16 +22,19 @@ export class AccommodationController implements IController {
                handler: this.UpdateAccommodationById,
                method: "PUT",
                path: "/accommodation/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.AddNewAccommodation,
                method: "POST",
                path: "/accommodation",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteAccommodationById,
                method: "DELETE",
                path: "/accommodation/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 

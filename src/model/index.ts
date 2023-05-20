@@ -8,3 +8,7 @@ export * from "./sub-category";
 export * from "./accommodation";
 export * from "./tours-travel";
 export * from "./auth";
+export * from "./blog-category.model";
+export * from "./blog.model";
+export * from "./contact-us.model";
+export * from "./enquiry.model";

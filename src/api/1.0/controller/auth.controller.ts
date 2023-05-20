@@ -154,11 +154,9 @@ export class AuthController implements IController {
                          return Ok(res, `${response.firstName} ${response.lastName} is updated successfully`);
                     })
                     .catch((err) => {
-                         // console.log(err);
                          return UnAuthorized(res, err);
                     });
           } catch (err) {
-               // console.log(err);
                return UnAuthorized(res, err);
           }
      }
