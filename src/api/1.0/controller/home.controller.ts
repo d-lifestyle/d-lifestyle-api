@@ -4,7 +4,7 @@ import { ContactProps, EnquiryFormProps, IController, IControllerRoutes } from "
 import { CategoriesProps } from "types/categories";
 import { ContactFormProps } from "types";
 import { Ok, UnAuthorized } from "utils";
-import { Accommodation, ContactMe, Enquiry } from "model";
+import { Accommodation, ContactMe, Enquiry, User } from "model";
 
 export class HomePageController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -61,6 +61,11 @@ export class HomePageController implements IController {
                method: "PUT",
                path: "/enquiry/:id",
                middleware: [ProtectRoute, AdminRoutes],
+          });
+          this.routes.push({
+               handler: this.GetWebContent,
+               method: "GET",
+               path: "/web-content",
           });
      }
 
@@ -187,6 +192,15 @@ export class HomePageController implements IController {
           try {
                const data = await Enquiry.findOneAndDelete({ _id: req.params.id });
                return Ok(res, `${data.fullName} record is deleted`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+     public async GetWebContent(req: Request, res: Response) {
+          try {
+               const data = await User.find().limit(1);
+               console.log(data);
+               return Ok(res, data[0]);
           } catch (err) {
                return UnAuthorized(res, err);
           }

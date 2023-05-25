@@ -12,7 +12,12 @@ import { registerRoutesV1 } from "api";
 
 const corsOptions: CorsOptions = {
      credentials: true,
-     origin: ["http://localhost:3000", "http://localhost:3001"],
+     origin: [
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "https://dlifestyletc.com",
+          "https://dlifestyleadmin.netlify.app",
+     ],
 };
 
 class App {
