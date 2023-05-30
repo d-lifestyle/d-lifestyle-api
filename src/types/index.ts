@@ -11,3 +11,5 @@ export * from "./content.types";
 export * from "./main-category";
 export * from "./blog.types";
 export * from "./general.types";
+export * from "./client.types";
+export * from "./blog.types";

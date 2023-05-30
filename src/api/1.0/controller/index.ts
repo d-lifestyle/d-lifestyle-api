@@ -10,3 +10,4 @@ export * from "./auth.controller";
 export * from "./blog-category.controller";
 export * from "./blog.controller";
 export * from "./analysis.controller";
+export * from './client.controller'

@@ -11,32 +11,27 @@ export class BlogController implements IController {
                handler: this.GetAllBlogs,
                method: "GET",
                path: "/blogs",
-               middleware: [ProtectRoute, AdminRoutes],
           });
 
           this.routes.push({
                handler: this.GetBlogsById,
                method: "GET",
                path: "/blogs/:id",
-               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.RegisterNewBlog,
                method: "POST",
                path: "/blogs",
-               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.UpdateBlogById,
                method: "PUT",
                path: "/blogs/:id",
-               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteBlogById,
                method: "DELETE",
                path: "/blogs/:id",
-               middleware: [ProtectRoute, AdminRoutes],
           });
      }
      public async GetAllBlogs(req: Request, res: Response) {

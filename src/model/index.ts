@@ -12,3 +12,4 @@ export * from "./blog-category.model";
 export * from "./blog.model";
 export * from "./contact-us.model";
 export * from "./enquiry.model";
+export * from './client.model'
