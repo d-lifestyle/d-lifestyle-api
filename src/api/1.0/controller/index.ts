@@ -5,9 +5,10 @@ export * from "./carousel.controller";
 export * from "./sub-category.controller";
 export * from "./accommodation.controller";
 export * from "./tours-travel.controller";
-export * from "./main-category.controller";
 export * from "./auth.controller";
 export * from "./blog-category.controller";
 export * from "./blog.controller";
 export * from "./analysis.controller";
-export * from './client.controller'
+export * from "./client.controller";
+export * from "./cruise.controller";
+export * from "./rental.controller";

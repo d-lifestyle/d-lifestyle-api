@@ -107,10 +107,10 @@ export class AuthController implements IController {
                     process.env.JWT_SECRET || config.get("JWT_SECRET"),
                     { expiresIn: process.env.JWT_EXPIRE || config.get("JWT_EXPIRE") }
                );
-
                return Ok(res, {
                     message: `${user.firstName} ${user.lastName} is logged in`,
                     token: token,
+                    user,
                });
           } catch (err) {
                return UnAuthorized(res, err);

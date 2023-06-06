@@ -8,8 +8,7 @@ const CategorySchema: mongoose.Schema<
      {}
 > = new mongoose.Schema<CategoriesProps>(
      {
-          name: { type: mongoose.Schema.Types.String, required: true, lowercase: true },
-          parentCategory: { type: mongoose.Schema.Types.ObjectId, ref: "MainCategory", required: true },
+          displayName: { type: mongoose.Schema.Types.String, required: true, lowercase: true },
      },
      {
           timestamps: true,

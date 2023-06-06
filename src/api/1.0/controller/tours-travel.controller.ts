@@ -40,17 +40,10 @@ export class ToursTravelController implements IController {
 
      public async getAllToursTravel(req: Request, res: Response) {
           try {
-               const data = await ToursTravel.find()
-                    .sort({ createdAt: -1 })
-                    .populate({
-                         path: "SubCategory",
-                         select: "name",
-                         populate: {
-                              path: "CategoryId",
-                              select: "name",
-                              populate: { path: "parentCategory", select: "displayName" },
-                         },
-                    });
+               const data = await ToursTravel.find().sort({ createdAt: -1 }).populate({
+                    path: "SubCategory",
+                    select: "name",
+               });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -62,7 +55,6 @@ export class ToursTravelController implements IController {
                const data = await ToursTravel.findById({ _id: req.params.id }).populate({
                     path: "SubCategory",
                     select: "name",
-                    populate: { path: "CategoryId", select: "name" },
                });
                return Ok(res, data);
           } catch (err) {

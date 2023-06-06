@@ -45,11 +45,10 @@ export class SubCategoryController implements IController {
 
   public async getAllSubCategory(req: Request, res: Response) {
     try {
-      const data = await SubCategory.find()
-        .populate({
-          path: "CategoryId",
-          populate: { path: "parentCategory" },
-        });
+      const data = await SubCategory.find().populate({
+        path: "CategoryId",
+        populate: { path: "parentCategory" },
+      });
       return Ok(res, data);
     } catch (err) {
       return UnAuthorized(res, err);
@@ -67,9 +66,9 @@ export class SubCategoryController implements IController {
 
   public async AddNewSubCategory(req: Request, res: Response) {
     try {
-      const { CategoryId, name }: SubCategoryProps = req.body;
-      const newCategory = await new SubCategory({ CategoryId, name }).save();
-      return Ok(res, `${newCategory.name} is created!`);
+      const { CategoryId, displayName }: SubCategoryProps = req.body;
+      const newCategory = await new SubCategory({ CategoryId, displayName }).save();
+      return Ok(res, `${newCategory.displayName} is created!`);
     } catch (err) {
       return UnAuthorized(res, err);
     }
@@ -77,12 +76,12 @@ export class SubCategoryController implements IController {
 
   public async UpdateSubCategoryById(req: Request, res: Response) {
     try {
-      const { CategoryId, name }: SubCategoryProps = req.body;
+      const { CategoryId, displayName }: SubCategoryProps = req.body;
       const updateCategory = await SubCategory.findOneAndUpdate(
         { _id: req.params.id },
-        { $set: { CategoryId, name } }
+        { $set: { CategoryId, displayName } }
       );
-      return Ok(res, `${updateCategory.name} is updated!`);
+      return Ok(res, `${updateCategory.displayName} is updated!`);
     } catch (err) {
       return UnAuthorized(res, err);
     }
@@ -91,7 +90,7 @@ export class SubCategoryController implements IController {
   public async DeleteSubCategoryById(req: Request, res: Response) {
     try {
       const data = await SubCategory.findByIdAndDelete({ _id: req.params.id });
-      return Ok(res, `${data.name} is deleted!`);
+      return Ok(res, `${data.displayName} is deleted!`);
     } catch (err) {
       return UnAuthorized(res, err);
     }
@@ -100,8 +99,10 @@ export class SubCategoryController implements IController {
   public async GetSubCategoryByCategoryId(req: Request, res: Response) {
     try {
       const id: string = req.params.id;
-      console.log(id)
-      const data = await SubCategory.find({ CategoryId: id as any });
+      const data = await SubCategory.find({ CategoryId: id as any }).populate({
+        path: "CategoryId",
+        populate: { path: "parentCategory", },
+      })
       return Ok(res, data);
     } catch (err) {
       return UnAuthorized(res, err);

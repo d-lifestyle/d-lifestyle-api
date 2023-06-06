@@ -22,16 +22,19 @@ export class BlogController implements IController {
                handler: this.RegisterNewBlog,
                method: "POST",
                path: "/blogs",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.UpdateBlogById,
                method: "PUT",
                path: "/blogs/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteBlogById,
                method: "DELETE",
                path: "/blogs/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
      public async GetAllBlogs(req: Request, res: Response) {
@@ -56,7 +59,7 @@ export class BlogController implements IController {
           try {
                const { body, images, label }: BlogProps = req.body;
                const data = await new Blog({
-                    body,
+                    body: JSON.parse(body),
                     images,
                     label,
                }).save();
@@ -67,7 +70,16 @@ export class BlogController implements IController {
      }
      public async UpdateBlogById(req: Request, res: Response) {
           try {
-               const data = await Blog.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body });
+               const data = await Blog.findByIdAndUpdate(
+                    { _id: req.params.id },
+                    {
+                         $set: {
+                              body: JSON.stringify(req.body.body),
+                              images: req.body.images,
+                              label: req.body.label,
+                         },
+                    }
+               );
                return Ok(res, `${data.label} is updated`);
           } catch (err) {
                return UnAuthorized(res, err);
