@@ -17,3 +17,11 @@ export interface RentalProps {
      options: "self" | "driver" | "chauffeur";
      SubCategory: mongoose.Schema.Types.ObjectId;
 }
+
+export interface RentalEnquiryProps {
+     rentalId: string;
+     custName: string;
+     custMessage: string;
+     custEmail: string;
+     custContact: string;
+}

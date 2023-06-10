@@ -1,9 +1,9 @@
-import { AccommodationProps, IController, IControllerRoutes, RentalProps } from "types";
+import { AccommodationProps, IController, IControllerRoutes, RentalEnquiryProps, RentalProps } from "types";
 import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Accommodation } from "model/accommodation";
 import { AdminRoutes, ProtectRoute } from "middleware";
-import { Rental } from "model";
+import { Rental, RentalEnquiry } from "model";
 
 export class RentalController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -23,16 +23,30 @@ export class RentalController implements IController {
                handler: this.RegisterNewRental,
                method: "POST",
                path: "/rental",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.UpdateRentalById,
                method: "PUT",
                path: "/rental/:id",
+               middleware: [ProtectRoute, AdminRoutes],
           });
           this.routes.push({
                handler: this.DeleteRentalById,
                method: "DELETE",
                path: "/rental/:id",
+               middleware: [ProtectRoute, AdminRoutes],
+          });
+          this.routes.push({
+               handler: this.CreateRentalEnquiry,
+               method: "POST",
+               path: "/rental-enquiry",
+          });
+          this.routes.push({
+               handler: this.GetEnquiryData,
+               method: "GET",
+               path: "/rental-enquiry",
+               middleware: [ProtectRoute, AdminRoutes],
           });
      }
 
@@ -94,6 +108,32 @@ export class RentalController implements IController {
                     _id: req.params.id,
                });
                return Ok(res, `${data.carRentalName} is deleted`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+
+     public async CreateRentalEnquiry(req: Request, res: Response) {
+          try {
+               const { custContact, custEmail, custMessage, custName, rentalId }: RentalEnquiryProps = req.body;
+               const data = new RentalEnquiry({
+                    custContact,
+                    custEmail,
+                    custMessage,
+                    custName,
+                    rentalId,
+               }).save();
+
+               return Ok(res, `${(await data).custName} your request have been saved`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+
+     public async GetEnquiryData(req: Request, res: Response) {
+          try {
+               const data = await RentalEnquiry.find().sort({ createdAt: -1 });
+               return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
           }

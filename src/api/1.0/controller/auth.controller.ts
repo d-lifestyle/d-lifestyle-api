@@ -51,8 +51,21 @@ export class AuthController implements IController {
                path: "/my-user/:deletionId",
                middleware: [ProtectRoute, AdminRoutes],
           });
+          this.routes.push({
+               handler: this.GetAdminContent,
+               method: "GET",
+               path: "/admin-content",
+          });
      }
 
+     public async GetAdminContent(req: Request, res: Response) {
+          try {
+               const data = await User.find({}).select("aboutInfo contactInfo createdAt email firstName lastName");
+               return Ok(res, data[0]);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
      public async Register(req: Request, res: Response) {
           try {
                const { email, password, aboutInfo, contactInfo, firstName, lastName, isAdmin }: RegisterProps =
@@ -119,8 +132,6 @@ export class AuthController implements IController {
      public async Logout(req: Request, res: Response) {
           try {
                res.removeHeader("Authorization");
-               res.clearCookie("token");
-               res.clearCookie("access_token");
                return Ok(res, "Logged out successfully");
           } catch (err) {
                return UnAuthorized(res, err);

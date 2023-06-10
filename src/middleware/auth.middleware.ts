@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import config from "config";
 import jwt from "jsonwebtoken";
 import { User } from "model";
-import { UnAuthorized } from "utils";
+import { BadRequest, UnAuthorized } from "utils";
 
 export const ProtectRoute = async (req: Request, res: Response, next: NextFunction) => {
      try {
@@ -25,6 +25,9 @@ export const ProtectRoute = async (req: Request, res: Response, next: NextFuncti
           // go ahead if all true
           next();
      } catch (err) {
+          if (err.name === "TokenExpiredError") {
+               return BadRequest(res, "token expired");
+          }
           return UnAuthorized(res, err.message);
      }
 };
