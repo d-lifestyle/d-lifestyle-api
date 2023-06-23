@@ -15,3 +15,4 @@ export * from "./client.model";
 export * from "./cruise.model";
 export * from "./rental.model";
 export * from "./rental-enquiry.model";
+export * from "./flight.model";

@@ -14,3 +14,4 @@ export * from "./client.types";
 export * from "./blog.types";
 export * from "./cruise.types";
 export * from "./rental.types";
+export * from "./flight.types";

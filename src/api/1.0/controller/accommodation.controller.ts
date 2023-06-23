@@ -3,6 +3,7 @@ import { Ok, UnAuthorized } from "utils";
 import { Request, Response } from "express";
 import { Accommodation } from "model/accommodation";
 import { AdminRoutes, ProtectRoute } from "middleware";
+import { Schema } from "mongoose";
 
 export class AccommodationController implements IController {
      public routes: IControllerRoutes[] = [];
@@ -36,11 +37,16 @@ export class AccommodationController implements IController {
                path: "/accommodation/:id",
                middleware: [ProtectRoute, AdminRoutes],
           });
+          this.routes.push({
+               handler: this.GetAccommodationBySubCategory,
+               method: "GET",
+               path: "/accommodation/category/:categoryId",
+          });
      }
 
      public async getAllAccommodation(req: Request, res: Response) {
           try {
-               const data = await Accommodation.find().populate("SubCategory").sort({ createdAt: -1 });
+               const data = await Accommodation.find().populate("SubCategory").sort({ _id: -1 });
                return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
@@ -92,6 +98,21 @@ export class AccommodationController implements IController {
           try {
                const data = await Accommodation.findByIdAndDelete({ _id: req.params.id });
                return Ok(res, `${data.displayName} is deleted!`);
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+
+     public async GetAccommodationBySubCategory(req: Request, res: Response) {
+          try {
+               const categoryId = req.params.categoryId;
+               if (!categoryId) {
+                    return UnAuthorized(res, `No category id provided`);
+               }
+               const data = await Accommodation.find({
+                    SubCategory: categoryId as unknown as Schema.Types.ObjectId,
+               }).populate("SubCategory");
+               return Ok(res, data);
           } catch (err) {
                return UnAuthorized(res, err);
           }

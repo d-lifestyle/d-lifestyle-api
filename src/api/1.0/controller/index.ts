@@ -12,3 +12,4 @@ export * from "./analysis.controller";
 export * from "./client.controller";
 export * from "./cruise.controller";
 export * from "./rental.controller";
+export * from "./flight.controller";

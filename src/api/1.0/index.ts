@@ -15,6 +15,7 @@ import {
      ClientController,
      CruisePackageController,
      RentalController,
+     FlightController,
 } from "./controller";
 
 const routesHandler = (express: Express, controller: IController) => {
@@ -54,4 +55,5 @@ export const registerRoutesV1 = (express: Express) => {
      routesHandler(express, new AnalysisController());
      routesHandler(express, new ClientController());
      routesHandler(express, new RentalController());
+     routesHandler(express, new FlightController());
 };

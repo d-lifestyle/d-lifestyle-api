@@ -153,9 +153,7 @@ export class AuthController implements IController {
                await User.findByIdAndUpdate(
                     { _id: req.params.id },
                     {
-                         $set: {
-                              ...req.body,
-                         },
+                         $set: { ...req.body },
                     },
                     {
                          useFindAndModify: false,
